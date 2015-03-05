@@ -1,0 +1,51 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import praw
+from math import log,log10
+import json
+
+r = praw.Reddit('Programa Podemos Aragón 1.0')
+sub=r.get_subreddit('podemos').get_hot(limit=1000)
+
+T=7
+proposals=[]
+
+for s in sub:
+	if s.link_flair_css_class == 'propuesta':
+		p={}
+		p['url']= s.url
+		
+		ups=s.ups
+		downs=s.downs
+		p['ups']=ups
+		
+		# Consensus
+#		if hasattr(s, 'upvote_ratio'):
+#			ratio = s.upvote_ratio
+#		else:
+#			ratio=r.get_submission(submission_id=s.id).upvote_ratio
+#		consensus=log(ups+downs,2) * (ratio*2-1) 
+#		p['consensus']=consensus
+#		p['ratio']=ratio
+
+		# Decelerated hotness
+		timeweight = 45000.0 * 2 * T #Reddit -> T=0.5 - ~12h
+		score=s.score
+		seconds = s.created
+		sc = log10(max(abs(score)+1, 1))
+		if score > 0:
+			sign = 1
+		elif score < 0:
+			sign = -1
+		else:
+			sign = 0
+		hotness = round(sign * sc + seconds / timeweight, 7) 
+		p['hotness']=hotness
+
+		proposals=proposals+[p]
+
+proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
+
+with open('data.json', 'w') as outfile:
+    json.dump(proposals[0:min(4, len(proposals)-1)], outfile)
