@@ -46,6 +46,13 @@ for s in sub:
 
 		proposals=proposals+[p]
 		p['accepted']=score>22
+		
+		#Response
+		p['response']=False
+		for comment in s.comments:
+			if str(comment.author)=='CCAragon':
+				p['response']=True
+
 
 proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
 
