@@ -6,13 +6,14 @@ from math import log,log10
 import json
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
-sub=r.get_subreddit('podemos').get_hot(limit=1000)
+sub=r.get_subreddit('podemos').get_hot(limit=100)
 
 T=7
 proposals=[]
 
 for s in sub:
 	if s.link_flair_css_class == 'propuesta':
+		print s
 		p={}
 		p['url']= s.url
 		
@@ -44,6 +45,7 @@ for s in sub:
 		p['hotness']=hotness
 
 		proposals=proposals+[p]
+		p['accepted']=score>22
 
 proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
 
