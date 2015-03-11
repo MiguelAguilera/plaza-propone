@@ -1,49 +1,43 @@
 <!doctype html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>Demo</title>
+    <meta charset="utf-8">
+    <title>Demo</title>
 </head>
 <body>
-	<div class="active">
-  		<h1> Pendientes </h1>
-	</div>
+    <div class="active">
+        <h1> Pendientes </h1>
+    </div>
 
-        <div class="accepted">
-                <h1> Aceptadas </h1>
-        </div>
+    <div class="accepted">
+        <h1> Aceptadas </h1>
+    </div>
 
 </body>
+    <script src="jquery.min.js"></script>
+    <script>
+        $.getJSON("http://participa.podemosaragon.info/data.json", function(data) {
 
-	
-	<script src="jquery.min.js"></script>
-	<script>
-	
+            var activeItems = [];
+            var acceptedItems = [];
+            $.each(data, function(i, item) {
+                var thread = '<li id="thread ' + i + '">' + data[i].score + ' <a href="' + data[i].url + '">' + data[i].title + '</a></li>';
+                if(data[i].score > 22) {
+                    acceptedItems.push(thread)
+                } else {
+                    activeItems.push(thread)
+                }
+            });
 
-	// Your code goes here.
-	$.getJSON( "http://participa.podemosaragon.info/data.json", function( data ) {
-		
-		var items = [];
-		var items1 = [];
-		$.each(data, function(i, item) {
-			var thread =  "<li id=thread " + i + ">"+ data[i].score +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>";
-			if(data[i].score > 22) {
-				items1.push(thread)
-			}
-			else {
-				items.push(thread)
-			}
+            $('<ul/>', {
+                "class": "my-new-list",
+                html: activeItems.join(""),
+            }).appendTo(".active");
 
-		});
-	
-	$( "<ul/>", {
-	"class": "my-new-list",
-	html: items.join( "" ),
-	}).appendTo( ".active" );
-	});
-
-
-
-
-	</script>
+            $('<ul/>', {
+                "class": "my-new-list",
+                html: acceptedItems.join(""),
+            }).appendTo(".accepted");
+        });
+    </script>
 </html>
