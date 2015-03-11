@@ -26,13 +26,14 @@
 		var items = [];
 		var items1 = [];
 		$.each(data, function(i, item) {
+			var thread =  "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>";
 			if(data[i].ups > 22) {
-				items1.push( "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>" );
+				items1.push(thread)
 			}
 			else {
-				items.push( "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>" );
-
+				items.push(thread)
 			}
+
 		});
 	
 	$( "<ul/>", {
