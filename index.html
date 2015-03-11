@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Demo</title>
+</head>
+<body>
+	<div class="active">
+  		<h1> Pendientes </h1>
+	</div>
+
+        <div class="accepted">
+                <h1> Aceptadas </h1>
+        </div>
+
+</body>
+
+	
+	<script src="jquery.min.js"></script>
+	<script>
+	
+
+	// Your code goes here.
+	$.getJSON( "http://participa.podemosaragon.info/data.json", function( data ) {
+		
+		var items = [];
+		var items1 = [];
+		$.each(data, function(i, item) {
+			if(data[i].ups > 22) {
+				items1.push( "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>" );
+			}
+			else {
+				items.push( "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>" );
+
+			}
+		});
+	
+	$( "<ul/>", {
+	"class": "my-new-list",
+	html: items.join( "" ),
+	}).appendTo( ".active" );
+	});
+
+
+
+
+	</script>
+</html>
