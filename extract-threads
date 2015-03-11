@@ -6,9 +6,9 @@ from math import log,log10
 import json
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
-sub=r.get_subreddit('podemos').get_hot(limit=100)
+sub=r.get_subreddit('podemos').get_new(limit=1000)
 
-T=7
+T=3.5
 proposals=[]
 
 for s in sub:
@@ -16,12 +16,11 @@ for s in sub:
 		print s
 		p={}
 		p['url']= s.url
-		
+		p['title']=s.title
 		ups=s.ups
 		downs=s.downs
 		p['ups']=ups
 		p['score']=s.score
-		
 		# Consensus
 #		if hasattr(s, 'upvote_ratio'):
 #			ratio = s.upvote_ratio
@@ -48,7 +47,7 @@ for s in sub:
 		proposals=proposals+[p]
 		p['accepted']=score>22
 		
-		#Response
+		#Answers
 		p['response']=False
 		for comment in s.comments:
 			if str(comment.author)=='CCAragon':
@@ -58,4 +57,5 @@ for s in sub:
 proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
 
 with open('data.json', 'w') as outfile:
-    json.dump(proposals[0:min(4, len(proposals)-1)], outfile)
+    json.dump(proposals, outfile)
+

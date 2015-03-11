@@ -25,6 +25,8 @@
 </body>
     <script src="jquery.min.js"></script>
     <script>
+	var Nthreads=6;
+
         $.getJSON("data.json", function(data) {
 
             var activeItems = [];
@@ -43,22 +45,24 @@
                 }
             });
 
+
             $('<ul/>', {
                 "class": "my-new-list",
-                html: activeItems.join(""),
+                html: activeItems.slice(0, Nthreads).join(""),
             }).appendTo(".active");
 
             $('<ul/>', {
                 "class": "my-new-list",
-                html: acceptedItems.join(""),
+                html: acceptedItems.slice(0, Nthreads).join(""),
             }).appendTo(".accepted");
 
             $('<ul/>', {
                 "class": "my-new-list",
-                html: respondedItems.join(""),
+                html: respondedItems.slice(0, Nthreads).join(""),
             }).appendTo(".responded");
 
 
         });
     </script>
 </html>
+
