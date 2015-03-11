@@ -13,6 +13,11 @@
         <h1> Aceptadas </h1>
     </div>
 
+    <div class="responded">
+        <h1> Respondidas </h1>
+    </div>
+
+
 </body>
     <script src="jquery.min.js"></script>
     <script>
@@ -20,9 +25,14 @@
 
             var activeItems = [];
             var acceptedItems = [];
+            var respondedItems = [];
+
             $.each(data, function(i, item) {
                 var thread = '<li id="thread ' + i + '">' + data[i].score + ' <a href="' + data[i].url + '">' + data[i].title + '</a></li>';
-                if(data[i].score > 22) {
+		if (data[i].response == true){
+		    respondedItems.push(thread)
+		}
+		else if(data[i].score > 22) {
                     acceptedItems.push(thread)
                 } else {
                     activeItems.push(thread)
@@ -38,6 +48,13 @@
                 "class": "my-new-list",
                 html: acceptedItems.join(""),
             }).appendTo(".accepted");
+
+            $('<ul/>', {
+                "class": "my-new-list",
+                html: respondedItems.join(""),
+            }).appendTo(".responded");
+
+
         });
     </script>
 </html>
