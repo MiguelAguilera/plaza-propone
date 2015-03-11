@@ -26,8 +26,8 @@
 		var items = [];
 		var items1 = [];
 		$.each(data, function(i, item) {
-			var thread =  "<li id=thread " + i + ">"+ data[i].ups +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>";
-			if(data[i].ups > 22) {
+			var thread =  "<li id=thread " + i + ">"+ data[i].score +" <a href='" + data[i].url + "'>"+ data[i].title +"</a></li>";
+			if(data[i].score > 22) {
 				items1.push(thread)
 			}
 			else {
