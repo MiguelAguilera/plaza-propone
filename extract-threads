@@ -6,7 +6,7 @@ from math import log,log10
 import json
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
-sub=r.get_subreddit('podemos').get_new(limit=1000)
+sub=r.get_subreddit('podemos').get_new(limit=100)
 
 T=3.5
 proposals=[]
@@ -17,10 +17,13 @@ for s in sub:
 		p={}
 		p['url']= s.url
 		p['title']=s.title
+		p['author']=str(s.author)
+		print dir(s)
 		ups=s.ups
 		downs=s.downs
 		p['ups']=ups
 		p['score']=s.score
+		p['comments']=len(s.comments)
 		# Consensus
 #		if hasattr(s, 'upvote_ratio'):
 #			ratio = s.upvote_ratio

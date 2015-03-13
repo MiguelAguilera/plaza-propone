@@ -6,11 +6,13 @@
 </head>
 <body>
     
+    <button onclick="filename='data.json';loadJData()">Propuesta</button> 
+    <button onclick="filename='data1.json';loadJData()">Propuesta</button> 
+    <div class="panel">
     <h1> La Plaza Pregunta </h1>
     <p> La plaza pregunta. Cualquier pregunta que alcance un número de puntos equivalente al  0.2% del censo en Aragón (~23 personas) será respondida por el consejo ciudadano (o uno de sus integrantes) en un plazo de 20 días. </p>
 
     <div class="active">
-        <h2> Pendientes </h2>
     </div>
 
     <div class="accepted">
@@ -20,49 +22,66 @@
     <div class="responded">
         <h2> Respondidas </h2>
     </div>
+    </div>
 
 
-</body>
-    <script src="jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
     <script>
-	var Nthreads=6;
+    
+    	function loadJData() {
+		var Nthreads=6;
 
-        $.getJSON("data.json", function(data) {
+        $.getJSON(filename, function(data) {
 
             var activeItems = [];
             var acceptedItems = [];
             var respondedItems = [];
 
             $.each(data, function(i, item) {
-                var thread = '<li id="thread ' + i + '">' + data[i].score + ' <a href="' + data[i].url + '">' + data[i].title + '</a></li>';
-		if (data[i].response == true){
-		    respondedItems.push(thread)
+                var thread = '<li id="thread class="link" ' + i + '"> ' + + data[i].score + ' - <a href="'
+                 + data[i].url + '">' + data[i].title + '</a></li>' 
+                 +'- por ' + data[i].author + ' | ' + data[i].comments + ' comentarios';
+				if (data[i].response == true){
+					respondedItems.push(thread)
+				}
+				else if(data[i].score > 22) {
+		        	acceptedItems.push(thread)
+		        } else {
+		        	activeItems.push(thread)
+		        }
+		        });
+		        
+		        $(".active").html("<h2> Pendientes </h2>")
+		        $(".accepted").html("<h2> Aceptadas </h2>")
+		        $(".responded").html("<h2> Respondidas </h2>")
+				
+		        $('<ul/>', {
+		            "class": "my-new-list",
+		            html: activeItems.slice(0, Nthreads).join(""),
+		        }).appendTo(".active");
+
+		        $('<ul/>', {
+		            "class": "my-new-list",
+		            html: acceptedItems.slice(0, Nthreads).join(""),
+		        }).appendTo(".accepted");
+
+		        $('<ul/>', {
+		            "class": "my-new-list",
+		            html: respondedItems.slice(0, Nthreads).join(""),
+		        }).appendTo(".responded");
+
+
+        	});
+    		
 		}
-		else if(data[i].score > 22) {
-                    acceptedItems.push(thread)
-                } else {
-                    activeItems.push(thread)
-                }
-            });
+		filename='data.json';
+		loadJData()
+		
+		
 
-
-            $('<ul/>', {
-                "class": "my-new-list",
-                html: activeItems.slice(0, Nthreads).join(""),
-            }).appendTo(".active");
-
-            $('<ul/>', {
-                "class": "my-new-list",
-                html: acceptedItems.slice(0, Nthreads).join(""),
-            }).appendTo(".accepted");
-
-            $('<ul/>', {
-                "class": "my-new-list",
-                html: respondedItems.slice(0, Nthreads).join(""),
-            }).appendTo(".responded");
-
-
-        });
+        
     </script>
+</body>
 </html>
 
