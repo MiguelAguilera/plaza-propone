@@ -68,6 +68,6 @@ for s in sub:
 proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
 
 if len(proposals):
-	with open(flair+'-data.json', 'w') as outfile:
+	with open(flair+'.json', 'w') as outfile:
 		json.dump(proposals, outfile)
 
