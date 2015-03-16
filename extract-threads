@@ -8,20 +8,22 @@ import json
 
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
-sub=r.get_subreddit('podemos').get_new(limit=1000)
+sub=r.get_subreddit('plazaaragon').get_new(limit=1000)
 
 T=3.5
 proposals=[]
+threads=[]
 
 if len(argv) < 2:
 	print "Usage: " + argv[0] + " <link_flair_tag>"
 	exit(1)
 
-flair = argv[1].lower()
+flair = argv[1]
 for s in sub:
-	print s.link_flair_text
+	threads=threads+[s.id]
+	print s.link_flair_text, s.link_flair_css_class
 #	if s.link_flair_css_class == 'propuesta':
-	if s.link_flair_css_class== flair:
+	if s.link_flair_text== flair:
 		print s
 		p={}
 		p['url']= s.url
@@ -71,3 +73,8 @@ if len(proposals):
 	with open(flair+'.json', 'w') as outfile:
 		json.dump(proposals, outfile)
 
+with open("threads.json") as infile:
+	threads1 = json.load(infile)
+threads=list(set(threads+threads1))
+with open('threads.json','w') as outfile:
+	json.dump(threads,outfile)
