@@ -4,12 +4,8 @@ function loadJData(filename) {
 		var activeItems = [];
 		var acceptedItems = [];
         var respondedItems = [];
-
         $.each(data, function(i, item) {
-        	var thread = '<li id="thread class="link" ' + i + '"> ' 
-        	+ data[i].score + ' - <a href="' + data[i].url + '">' 
-        	+ data[i].title + '</a></li>' 
-            +'- por ' + data[i].author + ' | ' + data[i].comments + ' comentarios';
+        	var thread = '<li id="thread class="link" ' + i + '"> ' + '<a href="' + data[i].url + '">' + data[i].title + '</a> ('  + data[i].score + ' puntos)</li>' +'por ' + data[i].author + ' | ' + data[i].comments + ' comentarios';
 			if (data[i].response == true){
 				respondedItems.push(thread)
 			}
@@ -18,30 +14,21 @@ function loadJData(filename) {
 		    } else {
 		        activeItems.push(thread)
 		    }
-		});
-		        
+		});   
 		$(".active").html("<h2> Pendientes </h2>")
 		$(".accepted").html("<h2> Aceptadas </h2>")
-		$(".responded").html("<h2> Respondidas </h2>")
-				
+		$(".responded").html("<h2> Respondidas </h2>")	
 		$('<ul/>', {
 			"class": "my-new-list",
 		    html: activeItems.slice(0, Nthreads).join(""),
 		}).appendTo(".active");
-
 		$('<ul/>', {
 			"class": "my-new-list",
 			html: acceptedItems.slice(0, Nthreads).join(""),
 		}).appendTo(".accepted");
-
 		$('<ul/>', {
 			"class": "my-new-list",
 			html: respondedItems.slice(0, Nthreads).join(""),
 		}).appendTo(".responded");
-
-
-	});
-    		
+	});		
 }
-		
-		
