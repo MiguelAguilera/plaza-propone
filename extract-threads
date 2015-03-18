@@ -46,7 +46,7 @@ for s in sub:
 		p['downs']=downs
 		p['ups']=ups
 		print ups, downs, score
-		consensus=log(ups+downs,2) * (ratio*2-1) 
+		consensus=log(ups+downs+1,2) * (ratio*2-1) 
 		p['consensus']=consensus
 		
 
