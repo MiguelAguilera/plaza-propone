@@ -1,5 +1,6 @@
 function loadJData(filename) {
 	var Nthreads=8;
+	var Nresponses=4;
 	$.getJSON(filename, function(data) {
 		var activeItems = [];
 		var acceptedItems = [];
@@ -9,7 +10,7 @@ function loadJData(filename) {
 			if (data[i].response == true){
 				respondedItems.push(thread)
 			}
-			else if(data[i].ups > 23) {
+			else if(data[i].ups > 22) {
 		        acceptedItems.push(thread)
 		    } else {
 		        activeItems.push(thread)
@@ -24,11 +25,11 @@ function loadJData(filename) {
 		}).appendTo(".active");
 		$('<ul/>', {
 			"class": "my-new-list",
-			html: acceptedItems.slice(0, Nthreads).join(""),
+			html: acceptedItems.slice(0, Nresponses).join(""),
 		}).appendTo(".accepted");
 		$('<ul/>', {
 			"class": "my-new-list",
-			html: respondedItems.slice(0, Nthreads).join(""),
+			html: respondedItems.slice(0, Nresponses).join(""),
 		}).appendTo(".responded");
 	});		
 }
