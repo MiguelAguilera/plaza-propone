@@ -29,7 +29,10 @@ for s in sub:
 		print s
 		p={}
 		p['url']= s.url
-		p['title']=s.title
+		title=s.title
+		if title.isupper():
+			title=title.lower()
+		p['title']=title
 		p['author']=str(s.author)
 
 		score=s.score
