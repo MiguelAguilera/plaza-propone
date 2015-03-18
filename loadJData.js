@@ -5,11 +5,11 @@ function loadJData(filename) {
 		var acceptedItems = [];
         var respondedItems = [];
         $.each(data, function(i, item) {
-        	var thread = '<li id="thread class="link" ' + i + '"> ' + '<a href="' + data[i].url + '">' + data[i].title + '</a> ('  + data[i].score + ' puntos)</li>' +'por ' + data[i].author + ' | ' + data[i].comments + ' comentarios';
+        	var thread = '<li id="thread class="link" ' + i + '"> ' + '<a href="' + data[i].url + '">' + data[i].title + '</a> ('  + data[i].ups + ' votos positivos, '+ data[i].downs + ' votos negativos)</li>' +'por ' + data[i].author + ' | ' + data[i].comments + ' comentarios';
 			if (data[i].response == true){
 				respondedItems.push(thread)
 			}
-			else if(data[i].score > 22) {
+			else if(data[i].ups > 23) {
 		        acceptedItems.push(thread)
 		    } else {
 		        activeItems.push(thread)

@@ -5,9 +5,11 @@ from sys import argv
 import praw
 from math import log,log10
 import json
+import os.path
 
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
+
 sub=r.get_subreddit('plazaaragon').get_new(limit=1000)
 
 T=3.5
@@ -29,19 +31,24 @@ for s in sub:
 		p['url']= s.url
 		p['title']=s.title
 		p['author']=str(s.author)
-		ups=s.ups
-		downs=s.downs
-		p['ups']=ups
-		p['score']=s.score
+
+		score=s.score
+		p['score']=score
 		p['comments']=len(s.comments)
-		# Consensus
-#		if hasattr(s, 'upvote_ratio'):
-#			ratio = s.upvote_ratio
-#		else:
-#			ratio=r.get_submission(submission_id=s.id).upvote_ratio
-#		consensus=log(ups+downs,2) * (ratio*2-1) 
-#		p['consensus']=consensus
-#		p['ratio']=ratio
+		#Consensus
+		if hasattr(s, 'upvote_ratio'):
+			ratio = s.upvote_ratio
+		else:
+			ratio=r.get_submission(submission_id=s.id).upvote_ratio
+		p['ratio']=ratio
+		ups=int(round(s.score/(2.0 - 1.0/ratio)))
+		downs=-(score-ups)
+		p['downs']=downs
+		p['ups']=ups
+		print ups, downs, score
+		consensus=log(ups+downs,2) * (ratio*2-1) 
+		p['consensus']=consensus
+		
 
 		# Decelerated hotness
 		timeweight = 45000.0 * 2 * T #Reddit -> T=0.5 - ~12h
@@ -73,8 +80,10 @@ if len(proposals):
 	with open(flair+'.json', 'w') as outfile:
 		json.dump(proposals, outfile)
 
-with open("threads.json") as infile:
-	threads1 = json.load(infile)
-threads=list(set(threads+threads1))
+
+if os.path.isfile("threads.json"):
+	with open("threads.json") as infile:
+		threads1 = json.load(infile)
+	threads=list(set(threads+threads1))
 with open('threads.json','w') as outfile:
 	json.dump(threads,outfile)
