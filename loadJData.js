@@ -1,5 +1,5 @@
 function loadJData(filename) {
-	var Nthreads=6;
+	var Nthreads=8;
 	$.getJSON(filename, function(data) {
 		var activeItems = [];
 		var acceptedItems = [];
