@@ -9,6 +9,12 @@ import os.path
 
 
 r = praw.Reddit('Programa Podemos Aragón 1.0')
+keys_file='rd.keys'
+with open(keys_file) as f:
+    username = f.readline().strip("\n")
+    password = f.readline().strip("\n")
+    
+r.login(username = username, password = password)
 
 sub=r.get_subreddit('plazaaragon').get_new(limit=1000)
 
