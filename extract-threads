@@ -45,7 +45,7 @@ for s in sub:
 		REP=4.0
 		ratio=0
 		score=0
-		for rep in range(REP):
+		for rep in range(int(REP)):
 			post=r.get_submission(submission_id=s.id)
 			ratio += post.upvote_ratio/REP
 			score += post.score/REP
