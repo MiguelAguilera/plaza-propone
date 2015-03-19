@@ -49,6 +49,7 @@ for s in sub:
 			post=r.get_submission(submission_id=s.id)
 			ratio += post.upvote_ratio/REP
 			score += post.score/REP
+		score=int(round(score))
 		p['ratio']=ratio
 		ups=int(round(s.score/(2.0 - 1.0/ratio)))
 		downs=-(score-ups)
