@@ -48,7 +48,7 @@ for s in sub:
 #		if hasattr(s, 'upvote_ratio'):
 #			ratio = s.upvote_ratio
 #		else:
-		REP=4.0
+		REP=1.0
 		ratio=0
 		score=0
 		for rep in range(int(REP)):
