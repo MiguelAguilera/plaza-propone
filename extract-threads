@@ -52,7 +52,7 @@ for s in sub:
 		score=int(round(score))
 		p['ratio']=ratio
 		ups=int(round(s.score/(2.0 - 1.0/ratio)))
-		downs=-(score-ups)
+		downs=min(0,-(score-ups))
 		p['downs']=downs
 		p['ups']=ups
 		p['score']=score
