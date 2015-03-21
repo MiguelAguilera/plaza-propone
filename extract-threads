@@ -29,7 +29,6 @@ if len(argv) < 2:
 flair = argv[1]
 for s in sub:
 	threads=threads+[s.id]
-	print s.link_flair_text, s.link_flair_css_class
 #	if s.link_flair_css_class == 'propuesta':
 	if s.link_flair_text== flair:
 		print s
