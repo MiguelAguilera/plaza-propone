@@ -26,11 +26,18 @@ if len(argv) < 2:
 	print "Usage: " + argv[0] + " <link_flair_tag>"
 	exit(1)
 
-flair = argv[1]
+#flair = argv[1]
+filename=argv[1]
+flairs=[]
+print 'filename',filename
+for arg in argv[1:]:
+	flairs=flairs+[arg.lower()]
+print flairs
+
 for s in sub:
 	threads=threads+[s.id]
-#	if s.link_flair_css_class == 'propuesta':
-	if s.link_flair_text== flair:
+	if str(s.link_flair_css_class).lower() in flairs:
+#	if s.link_flair_text== flair:
 		print s
 		p={}
 		p['url']= s.url
@@ -93,7 +100,7 @@ for s in sub:
 proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
 
 if len(proposals):
-	with open(flair+'.json', 'w') as outfile:
+	with open(filename+'.json', 'w') as outfile:
 		json.dump(proposals, outfile)
 
 
