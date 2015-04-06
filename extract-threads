@@ -74,7 +74,7 @@ for s in sub:
 		
 
 		# Decelerated hotness
-		timeweight = 45000.0 * 2 * T #Reddit -> T=0.5 - ~12h
+		timeweight = 45000.0 * 2 * 7 * T #Reddit -> T=0.5 - ~12h
 		score=s.score
 		seconds = s.created
 		sc = log10(max(abs(score)+1, 1))
