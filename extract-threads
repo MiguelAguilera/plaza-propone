@@ -29,10 +29,16 @@ if len(argv) < 2:
 #flair = argv[1]
 filename=argv[1]
 flairs=[]
-print 'filename',filename
 for arg in argv[1:]:
 	flairs=flairs+[arg.lower()]
 print flairs
+
+bufferfile='buffer.json'
+if os.path.isfile(bufferfile):
+	with open(bufferfile) as infile:
+		bdata = json.load(infile)
+else:
+	bdata={}
 
 for s in sub:
 	threads=threads+[s.id]
@@ -54,20 +60,30 @@ for s in sub:
 #		if hasattr(s, 'upvote_ratio'):
 #			ratio = s.upvote_ratio
 #		else:
-		REP=1.0
-		ratio=0
-		score=0
-		for rep in range(int(REP)):
-			post=r.get_submission(submission_id=s.id)
-			ratio += post.upvote_ratio/REP
-			score += post.score/REP
-		score=int(round(score))
+		post=r.get_submission(submission_id=s.id)
+		ratio = post.upvote_ratio
+		score = post.score
 		p['ratio']=ratio
-		ups=int(round(s.score/(2.0 - 1.0/ratio)))
+		if ratio>0 and ratio != 0.5:
+			ups=int(round(s.score/(2.0 - 1.0/ratio)))
+		else:
+			ups=0
 		downs=max(0,-(score-ups))
+		if s.id in bdata:
+			ini = max(0,len(bdata[s.id]['ups'])-5)
+			bdata[s.id]['ups']=bdata[s.id]['ups'][ini:]+[ups]
+			bdata[s.id]['downs']=bdata[s.id]['downs'][ini:]+[downs]
+		else:
+			bdata[s.id]={}
+			bdata[s.id]['ups']=[ups]
+			bdata[s.id]['downs']=[downs]
+		ups=min(bdata[s.id]['ups'])
+		downs=min(bdata[s.id]['downs'])
 		p['downs']=downs
 		p['ups']=ups
 		p['score']=score
+		print 'ups', bdata[s.id]['ups']
+		print 'downs', bdata[s.id]['downs']
 		print ups, downs, score
 		consensus=log(ups+downs+1,2) * (ratio*2-1) 
 		p['consensus']=consensus
@@ -110,3 +126,6 @@ if os.path.isfile("threads.json"):
 	threads=list(set(threads+threads1))
 with open('threads.json','w') as outfile:
 	json.dump(threads,outfile)
+with open(bufferfile,'w') as outfile:
+        json.dump(bdata,outfile)
+
