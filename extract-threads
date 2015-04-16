@@ -85,7 +85,7 @@ for s in sub:
 		print 'ups', bdata[s.id]['ups']
 		print 'downs', bdata[s.id]['downs']
 		print ups, downs, score
-		consensus=log(ups+downs+1,2) * (ratio*2-1) 
+		consensus=log(ups+downs+1,10) * (ratio*2-1) 
 		p['consensus']=consensus
 		
 
@@ -102,7 +102,7 @@ for s in sub:
 			sign = 0
 		hotness = round(sign * sc + seconds / timeweight, 7) 
 		p['hotness']=hotness
-
+		p['timestamp']=s.created
 		proposals=proposals+[p]
 		p['accepted']=score>22
 		
@@ -113,7 +113,7 @@ for s in sub:
 				p['response']=True
 
 
-proposals = sorted(proposals, key=lambda obj: obj['hotness'], reverse=True)
+proposals = sorted(proposals, key=lambda obj: obj['score'], reverse=True)
 
 if len(proposals):
 	with open(filename+'.json', 'w') as outfile:
